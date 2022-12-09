@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Zeus Collection DEMO</title>
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--  start: custom style  -->
+    <style>
+        canvas, img {
+            position: absolute;
+        }
+        img {
+            z-index: 2;
+        }
+    </style>
+    <!--  end: custom style  -->
+</head>
+<body>
+<button onclick=changeCh("00016")>00016</button>
+<button onclick=changeCh("00017")>00017</button>
+<button onclick=changeCh("00018")>00018</button>
+<button onclick=changeCh("00019")>00019</button>
+<button onclick=changeCh("00020")>00020</button>
+<button onclick=changeCh("00021")>00021</button>
+<button onclick=changeCh("00022")>00022</button>
+<button onclick=changeCh("00023")>00023</button>
+<br>
+<script src="assets/pixi.min.js"></script>
+<script>
+
+let app = new PIXI.Application({width: window.innerWidth, height: window.innerHeight});
+document.body.appendChild(app.view);
+
+function changeCh(number) {
+    var sources = {
+        img: `assets/fr/${number}.jpeg`,
+        depthMap: `assets/${number}.map.png`,
+    };
+
+    let img = PIXI.Sprite.from(sources.img);
+    img.height = window.innerHeight;
+    img.width = img.height / 3 * 2;
+    app.stage.addChild(img);
+
+    let depthMap = PIXI.Sprite.from(sources.depthMap);
+    depthMap.height = window.innerHeight;
+    depthMap.width = depthMap.height / 3 * 2;
+    app.stage.addChild(depthMap);
+
+    let displacementFilter = new PIXI.filters.DisplacementFilter(depthMap);
+    app.stage.filters = [displacementFilter];
+
+    window.onmousemove = function (e) {
+        displacementFilter.scale.x = (window.innerWidth / 2 - e.clientX) / 100;
+        displacementFilter.scale.y = (window.innerHeight / 2 - e.clientY) / 100;
+    };
+
+    window.ontouchmove = function (e) {
+        let lastTouch = e.touches[0];
+        displacementFilter.scale.x = (window.innerWidth / 2 - lastTouch.clientX) / 100;
+        displacementFilter.scale.y = (window.innerHeight / 2 - lastTouch.clientY) / 100;
+    };
+}
+</script>
+<!--  end: custom script  -->
+</body>
+</html>
