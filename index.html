@@ -9,6 +9,14 @@
     <style>
         canvas, img {
             position: absolute;
+            padding-left: 0;
+            padding-right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+            /*top: 50%;*/
+            left: 50%;
+            transform: translate(-50%, -0%);
         }
         img {
             z-index: 2;
@@ -26,10 +34,13 @@
 <button onclick=changeCh("00022")>00022</button>
 <button onclick=changeCh("00023")>00023</button>
 <br>
+
+<h1>Click on a number to show a render</h1>
+
 <script src="assets/pixi.min.js"></script>
 <script>
 
-let app = new PIXI.Application({width: window.innerWidth, height: window.innerHeight});
+let app = new PIXI.Application({width: window.innerHeight / 3 *2, height: window.innerHeight});
 document.body.appendChild(app.view);
 
 function changeCh(number) {
